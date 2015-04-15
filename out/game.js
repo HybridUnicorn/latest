@@ -152,11 +152,14 @@ var Contrast;
         }
         Boot.prototype.preload = function () {
             this.game.stage.backgroundColor = 0x00627C;
-
             this.load.audio('s_love', 'assets/Young_And_Old_Know_Love.mp3');
         };
 
         Boot.prototype.create = function () {
+            var style = { font: '65px Droid Sans', fill: '#ffffff', align: 'left' };
+            var t = this.game.add.text(0, 0, 'void', style);
+            t.destroy();
+
             // Game config
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -811,6 +814,7 @@ var Contrast;
             var tween = this.game.add.tween(this.camera).to({ x: 1330 }, 2000);
             tween.onComplete.add(function () {
                 _this.spot.fadeAway();
+                Contrast.Game.music.fadeOut(2000);
                 _this.game.time.events.add(Phaser.Timer.SECOND * 2, function () {
                     _this.dialog.process('Sir ! The contrast !$It disappears !!$Are you alright ? I can\'t see you !$How are we going to do ?!');
                     _this.dialog.endOnce(function () {
@@ -1649,12 +1653,11 @@ var Contrast;
         Title.prototype.create = function () {
             this.game.stage.backgroundColor = '#ff9900';
 
-            var style = { font: '65px Droid Sans', fill: '#ffffff', align: 'left' };
-            var t = this.game.add.text(0, 0, 'void', style);
-            t.destroy();
-
-            Contrast.Game.music.onDecoded.add(this.callback, this);
-            //this.game.time.events.add(Phaser.Timer.SECOND, this.callback, this)
+            if (Contrast.Game.music.isDecoded) {
+                this.callback();
+            } else {
+                Contrast.Game.music.onDecoded.add(this.callback, this);
+            }
         };
 
         Title.prototype.startGame = function () {
