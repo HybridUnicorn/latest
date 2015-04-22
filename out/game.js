@@ -621,6 +621,9 @@ var Contrast;
                 _this.game.debug.body(x);
             }, this);
 
+            // Show player
+            this.game.debug.body(this.player);
+
             // Display fps
             this.game.debug.text(this.game.time.fps.toString() || "--", 2, 14, "#00ff00");
         };
@@ -948,9 +951,14 @@ var Contrast;
             Contrast.Game.jump = -Math.abs(Contrast.Game.jump);
             Contrast.Game.vel = 200;
 
+            if (Contrast.Game.level_code == 'fall') {
+                this.player.body.setSize(14, 28);
+            }
+
             if (this.map.properties['reverse']) {
                 this.player.body.gravity.y *= -1;
                 Contrast.Game.jump *= -1;
+                this.player.body.setSize(20, 15);
             }
 
             if (this.map.properties['slide']) {
